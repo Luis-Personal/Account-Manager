@@ -9,3 +9,8 @@
 #pragma once
 #define MIN_LENGTH_PASSWORD 14
 #define MAX_LENGTH_PASSWORD 36
+
+/*
+ * Generates a random strong password
+ */
+char *password_generator();

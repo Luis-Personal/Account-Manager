@@ -14,8 +14,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <stdio.h>
-
 /**
  * Gets a random value in the interval [min, max[
  */
@@ -24,6 +22,9 @@ int getRandomValue(int max, int min)
     return (rand() % max) + min;
 }
 
+/*
+ * Checks if position has already been used
+ */
 int position_beeing_used(int *positions_used, const int position)
 {
     int index = 0;
@@ -98,15 +99,5 @@ char *password_generator()
         password[i++] = getRandomValue(max_character, MIN_CHARACTER_PRINTABLE);
     password[i] = '\0';
     
-    printf("%s\n", password);
     return password;
-}
-
-int main(){
-    //int i = 0;
-    //while(i++ < 1)
-    //    password_generator();
-    char *pass = password_generator();
-    free(pass);
-    return 0;
 }
