@@ -7,6 +7,7 @@
  */
 int main(){
     char *password = password_generator();
+    
     printf("%s\n", password);
     free(password);
     return 0;
