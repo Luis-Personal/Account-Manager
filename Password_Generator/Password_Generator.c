@@ -6,6 +6,7 @@
  * @bug No known bugs
 */
 
+#include <bits/time.h>
 #define MIN_CHARACTER_PRINTABLE 32
 #define MAX_CHARACTER_PRINTABLE 126
 #define NUMBER_OF_VALIDATIONS 4
@@ -25,10 +26,10 @@ int getRandomValue(int max, int min)
 /*
  * Checks if position has already been used
  */
-int position_beeing_used(int *positions_used, const int position)
+int position_beeing_used(int *positions_used, const int size, const int position)
 {
     int index = 0;
-    while(index < NUMBER_OF_VALIDATIONS)
+    while(index < size)
     {
         if(positions_used[index] == position)
             return 1;
@@ -67,20 +68,21 @@ void get_strong_password(char *password, int length)
     int positions_used[NUMBER_OF_VALIDATIONS];
     int index = 0,
         position = rand() % length;
-    
+    password[position] = getRandomNumber();
+    positions_used[index++] = position;
     while(index < NUMBER_OF_VALIDATIONS)
     {
-        while(position_beeing_used(positions_used, position))
+        position = rand() % length;
+        while(position_beeing_used(positions_used, index, position))
                 position = rand() % length;
-
-        if(position == 1)
-            password[position] = getRandomNumber();
-        else if (position == 2)
+        
+        if (position == 2)
             password[position] = getRandomLowercaseChar();
         else if (position == 3)
             password[position] = getRandomUppercaseChar();
         else
             password[position] = getRandomSymbol();
+
         positions_used[index++] = position;
     }
 }
@@ -89,15 +91,19 @@ char *password_generator()
 {
     int max_length = MAX_LENGTH_PASSWORD - MIN_LENGTH_PASSWORD,
         max_character = MAX_CHARACTER_PRINTABLE - MIN_CHARACTER_PRINTABLE;
-
-    srand(time(NULL)); //Make sure random doesn't give always the same
+    
+    struct timespec seed;
+    if (clock_gettime(CLOCK_REALTIME, &seed) == -1)
+        return "Clock Error";
+    srand(seed.tv_nsec); //Make sure random doesn't give always the same
     int length = getRandomValue(max_length, MIN_LENGTH_PASSWORD); 
     char *password = (char *) malloc(length * sizeof(char));
     
     int i = 0;
-    while(i  < length)
+    while(i  < length )
         password[i++] = getRandomValue(max_character, MIN_CHARACTER_PRINTABLE);
-    password[i] = '\0';
+    get_strong_password(password,length); 
+    password[length - 1] = '\0';
     
     return password;
 }
