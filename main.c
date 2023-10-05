@@ -4,19 +4,18 @@
 #include "Password_Generator/Password_Generator.h"
 #include "Print_Account/Print_Account.h"
 #include <stdio.h>
-#include <stdlib.h>
 /*
  * Generates a random strong password and displays it
  */
 int main(){
-    char buff[BUFSIZ];
-    char *last_element_in_buff;
+    char buff[BUFSIZ],
+        *last_element_in_buff = "";
     int number_of_password_generated = 0;
     
     clear_terminal();
+    
     printf("How many password do you want to generate?\n> ");
-    if(fgets(buff, sizeof(buff), stdin) != NULL)
-        number_of_password_generated = strtol(buff, &last_element_in_buff, 10);
+    number_of_password_generated = get_input_number(buff, last_element_in_buff);
     if(!(buff[0] !=  '\n' && (*last_element_in_buff == '\n' || *last_element_in_buff == '\0')))
         return INPUT_NUMBER_INVALID;
     
@@ -31,9 +30,7 @@ int main(){
         get_passwords(passwords, number_of_password_generated); 
   
         printf("Choice > ");
-        if(fgets(buff, sizeof(buff), stdin) != NULL)
-            pass_choosen = strtol(buff, &last_element_in_buff, 10);
-
+        pass_choosen = get_input_number(buff, last_element_in_buff);
         if(pass_choosen < 1 || pass_choosen > number_of_password_generated)
         {
             clear_terminal();
@@ -43,6 +40,6 @@ int main(){
     
     char *password = passwords[pass_choosen - 1];
     printf("%s\n", password);
-    return EXIT_SUCCESS;
+    return 0;
 }
 

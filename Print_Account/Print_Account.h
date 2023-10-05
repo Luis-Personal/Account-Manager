@@ -20,3 +20,9 @@ void get_passwords(char passwords[][MAX_LENGTH_PASSWORD], const unsigned int num
  * Clears the terminal
  */
 void clear_terminal();
+
+/**
+ * Reades the input and converts to number
+ * Note: If the input is NULL it returns -1
+ */
+int get_input_number(char *buff, char *last_element_in_buff);
