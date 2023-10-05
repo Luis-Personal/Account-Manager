@@ -1,4 +1,5 @@
-FILES	=	Password_Generator/Password_Generator.c
+FILES	=	Password_Generator/Password_Generator.c\
+			Print_Account/Print_Account.c
 FLAGS	=	-Wall -Werror -Wextra
 VISIBILITY	=	@
 NAME	= Account-Manager

@@ -2,9 +2,9 @@
 #define DEFAULT_PASSWORDS_TO_GENERATE 5
 
 #include "Password_Generator/Password_Generator.h"
+#include "Print_Account/Print_Account.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 /*
  * Generates a random strong password and displays it
  */
@@ -13,6 +13,7 @@ int main(){
     char *last_element_in_buff;
     int number_of_password_generated = 0;
     
+    clear_terminal();
     printf("How many password do you want to generate?\n> ");
     if(fgets(buff, sizeof(buff), stdin) != NULL)
         number_of_password_generated = strtol(buff, &last_element_in_buff, 10);
@@ -23,26 +24,25 @@ int main(){
         number_of_password_generated = DEFAULT_PASSWORDS_TO_GENERATE;
 
     char passwords[number_of_password_generated][MAX_LENGTH_PASSWORD];
-    int index = 0;
+    int pass_choosen = 0;
     
     do {
-        while(index < number_of_password_generated)
-        {
-            char *pass = password_generator();
-            strcpy(passwords[index], pass);
-            free(pass);
-            printf("%d > %s\n" , index + 1, passwords[index]);
-            index++;
-        }
-        if(index == number_of_password_generated)
-            printf("Which password do you want to use?\n> ");
-        else
-            printf("Please choose an option between 1 and %d", number_of_password_generated);
+        printf("Which password do you want to use?\n");
+        get_passwords(passwords, number_of_password_generated); 
+  
+        printf("Choice > ");
         if(fgets(buff, sizeof(buff), stdin) != NULL)
-            index = strtol(buff, &last_element_in_buff, 10);
-    } while(index < 1 || index > number_of_password_generated);
+            pass_choosen = strtol(buff, &last_element_in_buff, 10);
+
+        if(pass_choosen < 1 || pass_choosen > number_of_password_generated)
+        {
+            clear_terminal();
+            printf("Please choose an option between 1 and %d\n", number_of_password_generated);
+        }
+    } while(pass_choosen < 1 || pass_choosen > number_of_password_generated);
     
-    char *password = passwords[index - 1];
+    char *password = passwords[pass_choosen - 1];
     printf("%s\n", password);
     return EXIT_SUCCESS;
 }
+
