@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void clear_terminal()
+void    clear_terminal()
 {
     printf("\e[1;1H\e[2J");
 }
